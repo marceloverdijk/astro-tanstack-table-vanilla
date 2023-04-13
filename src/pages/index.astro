@@ -7,33 +7,114 @@ import Card from '../components/Card.astro';
 	<main>
 		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
 		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.<br />
-			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
+			To get started, open the directory <code>src/pages</code> in your project.
 		</p>
-		<ul role="list" class="link-card-grid">
-			<Card
-				href="https://docs.astro.build/"
-				title="Documentation"
-				body="Learn how Astro works and explore the official API docs."
-			/>
-			<Card
-				href="https://astro.build/integrations/"
-				title="Integrations"
-				body="Supercharge your project with new frameworks and libraries."
-			/>
-			<Card
-				href="https://astro.build/themes/"
-				title="Themes"
-				body="Explore a galaxy of community-built starter themes."
-			/>
-			<Card
-				href="https://astro.build/chat/"
-				title="Community"
-				body="Come say hi to our amazing Discord community. ❤️"
-			/>
-		</ul>
+		<div id="table-wrapper"></div>
 	</main>
 </Layout>
+
+<script>
+	import {
+		createTable,
+		createColumnHelper,
+		getCoreRowModel,
+		getPaginationRowModel,
+	} from '@tanstack/table-core'
+
+	type Person = {
+		firstName: string
+		lastName: string
+		age: number
+		visits: number
+		status: string
+		progress: number
+	}
+
+	const data: Person[] = [
+		{
+			firstName: 'tanner',
+			lastName: 'linsley',
+			age: 24,
+			visits: 100,
+			status: 'In Relationship',
+			progress: 50,
+		},
+		{
+			firstName: 'tandy',
+			lastName: 'miller',
+			age: 40,
+			visits: 40,
+			status: 'Single',
+			progress: 80,
+		},
+		{
+			firstName: 'joe',
+			lastName: 'dirte',
+			age: 45,
+			visits: 20,
+			status: 'Complicated',
+			progress: 10,
+		},
+	]
+
+	const columnHelper = createColumnHelper<Person>()
+
+	const columns = [
+		columnHelper.accessor('firstName', {
+			cell: info => info.getValue(),
+			footer: info => info.column.id,
+		}),
+		columnHelper.accessor(row => row.lastName, {
+			id: 'lastName',
+			cell: info => `<i>${info.getValue()}</i>`,
+			header: () => `<span>Last Name</span>`,
+			footer: info => info.column.id,
+		}),
+		columnHelper.accessor('age', {
+			header: () => 'Age',
+			cell: info => info.renderValue(),
+			footer: info => info.column.id,
+		}),
+		columnHelper.accessor('visits', {
+			header: () => `<span>Visits</span>`,
+			footer: info => info.column.id,
+		}),
+		columnHelper.accessor('status', {
+			header: 'Status',
+			footer: info => info.column.id,
+		}),
+		columnHelper.accessor('progress', {
+			header: 'Profile Progress',
+			footer: info => info.column.id,
+		}),
+	]
+
+	const table = createTable<Person>({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+		state: {}, // Dummy state
+    onStateChange: () => {}, // noop
+    renderFallbackValue: null,
+		debugAll: true,
+  })
+
+	const tableWrapper = document.querySelector('#table-wrapper')
+
+	// TODO: Based on the table instance generate the html table inside the table wrapper:
+	//       table header, table body, pagination controls.
+
+	// But first, let's try to inspec the table instance a bit...
+	// ...which fails unfortunately...
+
+	console.dir(table)
+	console.dir(table.getHeaderGroups())
+  console.dir(table.getFlatHeaders())
+  console.dir(table.getRowModel())
+  console.dir(table.getPageOptions())
+
+</script>
 
 <style>
 	main {
@@ -52,30 +133,5 @@ import Card from '../components/Card.astro';
 		-webkit-text-fill-color: transparent;
 		background-size: 400%;
 		background-position: 0%;
-	}
-	.instructions {
-		line-height: 1.6;
-		margin: 1rem 0;
-		border: 1px solid rgba(var(--accent), 25%);
-		background-color: white;
-		padding: 1rem;
-		border-radius: 0.4rem;
-	}
-	.instructions code {
-		font-size: 0.875em;
-		font-weight: bold;
-		background: rgba(var(--accent), 12%);
-		color: rgb(var(--accent));
-		border-radius: 4px;
-		padding: 0.3em 0.45em;
-	}
-	.instructions strong {
-		color: rgb(var(--accent));
-	}
-	.link-card-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-		gap: 1rem;
-		padding: 0;
 	}
 </style>
