@@ -1,137 +1,136 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
 ---
 
 <Layout title="Welcome to Astro.">
-	<main>
-		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
-		<p class="instructions">
-			To get started, open the directory <code>src/pages</code> in your project.
-		</p>
-		<div id="table-wrapper"></div>
-	</main>
+  <main>
+    <h1>Welcome to <span class="text-gradient">Astro</span></h1>
+    <p class="instructions">
+      To get started, open the directory <code>src/pages</code> in your project.
+    </p>
+    <div id="table-wrapper"></div>
+  </main>
 </Layout>
 
 <script>
-	import {
-		createTable,
-		createColumnHelper,
-		getCoreRowModel,
-		getPaginationRowModel,
-	} from '@tanstack/table-core'
+  import {
+    createTable,
+    createColumnHelper,
+    getCoreRowModel,
+    getPaginationRowModel,
+  } from "@tanstack/table-core";
 
-	type Person = {
-		firstName: string
-		lastName: string
-		age: number
-		visits: number
-		status: string
-		progress: number
-	}
+  type Person = {
+    firstName: string;
+    lastName: string;
+    age: number;
+    visits: number;
+    status: string;
+    progress: number;
+  };
 
-	const data: Person[] = [
-		{
-			firstName: 'tanner',
-			lastName: 'linsley',
-			age: 24,
-			visits: 100,
-			status: 'In Relationship',
-			progress: 50,
-		},
-		{
-			firstName: 'tandy',
-			lastName: 'miller',
-			age: 40,
-			visits: 40,
-			status: 'Single',
-			progress: 80,
-		},
-		{
-			firstName: 'joe',
-			lastName: 'dirte',
-			age: 45,
-			visits: 20,
-			status: 'Complicated',
-			progress: 10,
-		},
-	]
+  const data: Person[] = [
+    {
+      firstName: "tanner",
+      lastName: "linsley",
+      age: 24,
+      visits: 100,
+      status: "In Relationship",
+      progress: 50,
+    },
+    {
+      firstName: "tandy",
+      lastName: "miller",
+      age: 40,
+      visits: 40,
+      status: "Single",
+      progress: 80,
+    },
+    {
+      firstName: "joe",
+      lastName: "dirte",
+      age: 45,
+      visits: 20,
+      status: "Complicated",
+      progress: 10,
+    },
+  ];
 
-	const columnHelper = createColumnHelper<Person>()
+  const columnHelper = createColumnHelper<Person>();
 
-	const columns = [
-		columnHelper.accessor('firstName', {
-			cell: info => info.getValue(),
-			footer: info => info.column.id,
-		}),
-		columnHelper.accessor(row => row.lastName, {
-			id: 'lastName',
-			cell: info => `<i>${info.getValue()}</i>`,
-			header: () => `<span>Last Name</span>`,
-			footer: info => info.column.id,
-		}),
-		columnHelper.accessor('age', {
-			header: () => 'Age',
-			cell: info => info.renderValue(),
-			footer: info => info.column.id,
-		}),
-		columnHelper.accessor('visits', {
-			header: () => `<span>Visits</span>`,
-			footer: info => info.column.id,
-		}),
-		columnHelper.accessor('status', {
-			header: 'Status',
-			footer: info => info.column.id,
-		}),
-		columnHelper.accessor('progress', {
-			header: 'Profile Progress',
-			footer: info => info.column.id,
-		}),
-	]
+  const columns = [
+    columnHelper.accessor("firstName", {
+      cell: (info) => info.getValue(),
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor((row) => row.lastName, {
+      id: "lastName",
+      cell: (info) => `<i>${info.getValue()}</i>`,
+      header: () => `<span>Last Name</span>`,
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor("age", {
+      header: () => "Age",
+      cell: (info) => info.renderValue(),
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor("visits", {
+      header: () => `<span>Visits</span>`,
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor("status", {
+      header: "Status",
+      footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor("progress", {
+      header: "Profile Progress",
+      footer: (info) => info.column.id,
+    }),
+  ];
 
-	const table = createTable<Person>({
+  const table = createTable<Person>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-		state: {}, // Dummy state
+    state: {}, // Dummy state
     onStateChange: () => {}, // noop
     renderFallbackValue: null,
-		debugAll: true,
-  })
+    debugAll: true,
+  });
 
-	const tableWrapper = document.querySelector('#table-wrapper')
+  const tableWrapper = document.querySelector("#table-wrapper");
 
-	// TODO: Based on the table instance generate the html table inside the table wrapper:
-	//       table header, table body, pagination controls.
+  // TODO: Based on the table instance generate the html table inside the table wrapper:
+  //       table header, table body, pagination controls.
 
-	// But first, let's try to inspec the table instance a bit...
-	// ...which fails unfortunately...
+  // But first, let's try to inspec the table instance a bit...
+  // ...which fails unfortunately...
 
-	console.dir(table)
-	console.dir(table.getHeaderGroups())
-  console.dir(table.getFlatHeaders())
-  console.dir(table.getRowModel())
-  console.dir(table.getPageOptions())
-
+  console.dir(table);
+  console.dir(table.getHeaderGroups());
+  console.dir(table.getFlatHeaders());
+  console.dir(table.getRowModel());
+  console.dir(table.getPageOptions());
 </script>
 
 <style>
-	main {
-		margin: auto;
-		padding: 1.5rem;
-		max-width: 60ch;
-	}
-	h1 {
-		font-size: 3rem;
-		font-weight: 800;
-		margin: 0;
-	}
-	.text-gradient {
-		background-image: var(--accent-gradient);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400%;
-		background-position: 0%;
-	}
+  main {
+    margin: auto;
+    padding: 1.5rem;
+    max-width: 60ch;
+  }
+  h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin: 0;
+  }
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
 </style>
