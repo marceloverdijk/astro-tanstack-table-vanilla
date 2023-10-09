@@ -7,10 +7,15 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "ncu": "ncu",
+    "ncu-upgrade": "ncu --upgrade --filterVersion '^*'"
   },
   "dependencies": {
-    "@tanstack/table-core": "^8.8.5",
-    "astro": "^2.2.3"
+    "@tanstack/table-core": "^8.10.6",
+    "astro": "^3.2.3"
+  },
+  "devDependencies": {
+    "npm-check-updates": "^16.14.5"
   }
 }
