@@ -1,6 +1,7 @@
 # Astro Tanstack Table Vanilla
 
 ```
+npm install
 npm run dev
 ```
 
