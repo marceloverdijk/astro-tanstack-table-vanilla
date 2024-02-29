@@ -20,7 +20,7 @@ import Layout from '@/layouts/Layout.astro'
   import { useTable, renderTable } from '@/lib/table'
   import { makeData, type Person } from '@/lib/makeData'
 
-  const people = makeData(10000)
+  const people = makeData(500)
 
   const columnHelper = createColumnHelper<Person>()
 
